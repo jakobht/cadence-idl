@@ -1963,6 +1963,19 @@ struct SupportedClientVersions{
 // ClusterInfo contains information about cadence cluster
 struct ClusterInfo{
   10: optional SupportedClientVersions supportedClientVersions
+  20: optional AuthConfig authConfig
+}
+
+// AuthConfig advertises the auth strategy the server expects so clients can
+// obtain a token without prior configuration.
+struct AuthConfig {
+  10: optional string type
+  20: optional OIDCAuthConfig oidc
+}
+
+struct OIDCAuthConfig {
+  10: optional string issuerURL
+  20: optional string clientID
 }
 
 struct RefreshWorkflowTasksRequest {

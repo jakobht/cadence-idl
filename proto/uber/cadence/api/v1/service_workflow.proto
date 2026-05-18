@@ -296,6 +296,27 @@ message GetClusterInfoRequest {
 
 message GetClusterInfoResponse {
   SupportedClientVersions supported_client_versions = 1;
+  AuthConfig auth_config = 2;
+}
+
+// AuthConfig advertises the auth strategy the server expects so clients can
+// obtain a token without prior configuration.
+message AuthConfig {
+  // Known values: "none", "oidc". Unknown values should be treated as "none".
+  string type = 1;
+  // Populated when type == "oidc".
+  OIDCAuthConfig oidc = 2;
+}
+
+message OIDCAuthConfig {
+  // OIDC issuer URL. Clients discover endpoints via
+  // <issuer>/.well-known/openid-configuration.
+  string issuer_url = 1;
+  // Public client ID clients use when initiating an OIDC flow. The same client
+  // is expected to support whichever flow the client picks (authorization code +
+  // PKCE for browsers, device authorization for CLIs). Operators with separate
+  // clients per flow should configure their OIDC provider to share audience.
+  string client_id = 2;
 }
 
 message GetWorkflowExecutionHistoryRequest {
